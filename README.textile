@@ -19,7 +19,7 @@ Usage: ./loghist file seconds expression
 This generates a histogram for HTTP 200s from the current apache logfile, sampling every 5 seconds.
 
 <pre>
-root@machine:~$ loghist /var/log/apache2/access.log 5 "HTTP/1.0\" 200"
+root@machine:~$ loghist /var/log/apache2/access.log 5 "HTTP/1.0\" 200
 2012/03/25 21:03:08 | 18 	==================
 2012/03/25 21:03:13 | 30 	==============================
 2012/03/25 21:03:18 | 26 	==========================
