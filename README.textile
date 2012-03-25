@@ -1,0 +1,33 @@
+h2. loghist - a cli histogram generator for real-time log changes 
+
+Amin Astaneh <amin@aminastaneh.net>
+Copyright (C) 2012
+
+h3. Description
+
+loghist, inspired by spark (https://github.com/holman/spark), tails a specified log and creates a histogram based on frequency of search matches via grep and a specified interval in seconds.
+
+h3. Example Usage
+
+<pre>
+Usage: ./loghist file seconds expression
+ file: logfile to generate histogram from
+ seconds: number of seconds between samples
+ expression: uses grep
+</pre>
+
+This generates a histogram for HTTP 200s from the current apache logfile, sampling every 5 seconds.
+
+<pre>
+root@machine:~$ loghist /var/log/apache2/access.log 5 "HTTP/1.0\" 200"
+2012/03/25 21:03:08 | 18 	==================
+2012/03/25 21:03:13 | 30 	==============================
+2012/03/25 21:03:18 | 26 	==========================
+2012/03/25 21:03:23 | 17 	=================
+2012/03/25 21:03:28 | 25 	=========================
+2012/03/25 21:03:33 | 28 	============================
+</pre>
+
+Enjoy!
+
+

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+#
+# Name:         loghist
+#
+# Purpose:      a cli histogram generator for real-time log changes
+#
+# Author:       Amin Astaneh (amin@aminastaneh.net)
+#
+# License Information
+#
+# Copyright (C) 2012 
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# BEGIN FUNCTIONS
+
+function tohist() {
+  # Prepend the histogram with the current time and total measured for timeframe
+  TIME=`date "+%Y/%m/%d %H:%m:%S"`
+  echo -en "$TIME | $1 \t"
+  # Take the total matches and print a bar equal in size
+  # There is currently no means to scale to terminal window
+  for i in `seq 1 $1`; do echo -n "="; done; echo
+}
+
+# END FUNCTIONS
+
+FILE=$1
+DURATION=$2
+EXPRESSION=$3
+
+if [ "$#" -ne "3" ]; then
+        echo "Usage: $0 file seconds expression"
+	echo " file: logfile to generate histogram from"
+	echo " seconds: number of seconds between samples"
+	echo " expression: uses grep"
+        exit 1
+fi
+
+while true; do 
+	tohist $( 
+	  # Clever hack - tails a file for a specified time, in seconds
+	  (tail -n0 -f $FILE & P=$! ; sleep $DURATION; kill -9 $P) | 
+          grep "$EXPRESSION" | wc -l 
+        ); 
+done
